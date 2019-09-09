@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:jsf="http://xmlns.jcp.org/jsf">
+    <h:head>
+        <title>Registro </title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+    </h:head>
+    <h:body>
+        
+        <h:form id="f1">
+            <p:growl id="growl" showDetail="true" sticky="true" />  
+            <p:outputLabel value="#{msg.Lregistro}" for="nombre" />
+            <p:separator />
+            <br/>
+            <p:outputLabel value="#{msg.Lnombre}" for="nombre" />
+            <p:inputText id="nombre" value="#{controlp1.nombre}" required="true"/>
+            <br/>
+            <br/>
+            <p:outputLabel value="#{msg.Lciudad}" for="ciudad" />
+            <p:inputText id="ciudad" value="#{controlp1.ciudad}" required="true"/>
+            <br/>
+            <br/>
+            <p:outputLabel value="#{msg.Lcorreo}" for="correo" />
+            <p:inputText id="correo" value="#{controlp1.correo}" required="true"/>
+            
+            
+            <br/>
+            <br/>
+            <button id="btnSubmit" type="Submit" jsf:actionListener="#{controlp1.agregarPersona()}" update="tabla">#{msg.Lagregar}</button>
+            <p:separator />
+            <p:dataTable var="tabla" emptyMessage="#{msg.Ltabla}" value="#{controlp1.lista}" editable="true">
+                <p:column headerText="#{msg.Lnombre}">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{tabla.nombreP}" /></f:facet>   
+                        <f:facet name="input"><h:inputText value="#{tabla.nombreP}" /></f:facet>
+                    </p:cellEditor>        
+                </p:column>
+
+                <p:column headerText="#{msg.Lciudad}">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{tabla.ciudadP}" /></f:facet>
+                        <f:facet name="input"><h:inputText value="#{tabla.ciudadP}" /></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="#{msg.Lcorreo}">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{tabla.correoP}" /></f:facet>
+                        <f:facet name="input"><h:inputText value="#{tabla.correoP}" readonly="true"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:ajax event="rowEdit" listener="#{controlp1.Editar}" update=":f1:growl" />
+                <p:ajax event="cellEdit" listener="#{controlp1.Editado}" update=":f1:growl" />
+                <p:ajax event="rowEditCancel" listener="#{controlp1.Cancelar}" update=":f1:growl" />
+                <p:column>
+                    <p:rowEditor/>
+                </p:column>   
+                <p:column>
+                    <button class="button btn-danger" type="submit" jsf:actionListener="#{controlp1.eliminarP(tabla.correoP)}" update="tabla">ELIMINAR</button>
+                </p:column>
+        </p:dataTable>
+        </h:form>
+    </h:body>
+</html>
+
